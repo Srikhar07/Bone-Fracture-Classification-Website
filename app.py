@@ -8,7 +8,7 @@ from email_utils import send_email
 # -------------------- PATH SETUP --------------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-MODEL_PATH = os.path.join(BASE_DIR, "model", "bone_feature.h5")
+MODEL_PATH = os.path.join(BASE_DIR, "model", "bone_feature.tflite")
 UPLOAD_FOLDER = os.path.join(BASE_DIR, "static", "bone_images")
 
 # create folder if not exists (important for Railway)
