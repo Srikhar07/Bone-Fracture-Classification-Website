@@ -15,17 +15,12 @@
 
 <div class='container'>
     <div class='card'>
-        {% if result%}
+        {% if result %}
             <p><strong>Name:</strong>{{name}}</p>
             <p><strong>Age:</strong>{{age}}</p>
-            <p><strong>Email:</strong>{{email}}</p>
             <p><strong>Phone number:</strong>{{phone_number}}</p>
             <img src="{{ url_for('static', filename=image_path) }}">
-            <p>{{result}}</P>
-        {% endif %}
-
-        {% if status%}
-            <p>{{status}}</P>
+            <p>{{result}}</p>
         {% endif %}
     </div>
 </div>
