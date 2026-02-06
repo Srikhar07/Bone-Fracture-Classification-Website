@@ -3,7 +3,6 @@ import numpy as np
 import tensorflow as tf
 from flask import Flask, render_template, request
 from keras.preprocessing import image
-from email_utils import send_email
 
 # ---------------- PATH SETUP ----------------
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -34,7 +33,6 @@ def prediction():
     try:
         name = request.form.get('user_name')
         age = request.form.get('age')
-        email = request.form.get('email')
         phone_number = request.form.get('phone')
 
         img_file = request.files.get('image')
@@ -63,35 +61,14 @@ def prediction():
         else:
             result = "The bone is NORMAL"
 
-        # -------- OPTIONAL EMAIL --------
-        status = "Email not requested"
-
-        # only send if email is given
-        if email and email.strip() != "":
-            try:
-                send_email(
-                    to_email=email,
-                    username=name,
-                    age=age,
-                    result=result,
-                    image_path=img_path,
-                    phone_number=phone_number
-                )
-                status = "Email sent successfully!"
-            except Exception as e:
-                print("Email error:", e)
-                status = "Email sending failed"
-
         # -------- RETURN RESULT --------
         return render_template(
             'result.html',
             name=name,
             age=age,
-            email=email,
             phone_number=phone_number,
             result=result,
-            image_path='bone_images/' + img_file.filename,
-            status=status
+            image_path='bone_images/' + img_file.filename
         )
 
     except Exception as e:
