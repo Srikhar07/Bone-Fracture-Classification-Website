@@ -36,7 +36,7 @@ def send_email(to_email, username, age, result, image_path, phone_number):
     
     
 
-    with smtplib.SMTP("smtp.gmail.com",port=587) as connection:
+    with smtplib.SMTP("smtp.gmail.com",port=587, timeout=15) as connection:
         connection.starttls()
         connection.login(user=my_mail, password=password)
         connection.send_message(msg)
