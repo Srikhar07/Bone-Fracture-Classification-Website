@@ -1,23 +1,29 @@
 import smtplib
 import os
 import socket
+import mimetypes
 from email.message import EmailMessage
 
 # prevent long blocking
-socket.setdefaulttimeout(25)
+socket.setdefaulttimeout(15)
 
-my_mail = os.environ.get("SENDER_MAIL")
-password = os.environ.get("SENDER_PASSWORD")
+SENDER_MAIL = os.environ.get("SENDER_MAIL")
+SENDER_PASSWORD = os.environ.get("SENDER_PASSWORD")
 
 def send_email(to_email, username, age, result, image_path, phone_number):
-    if not my_mail or not password:
-        print("Email credentials missing")
+    # -------- BASIC CHECKS --------
+    if not to_email or to_email.strip() == "":
+        print("No recipient email provided")
+        return
+
+    if not SENDER_MAIL or not SENDER_PASSWORD:
+        print("Missing EMAIL ENV VARIABLES")
         return
 
     msg = EmailMessage()
-    msg['Subject'] = 'Bone Fracture Classification Report'
-    msg['From'] = my_mail
-    msg['To'] = to_email
+    msg["Subject"] = "Bone Fracture Classification Report"
+    msg["From"] = SENDER_MAIL
+    msg["To"] = to_email
 
     msg.set_content(f"""
 Hello {username},
@@ -26,38 +32,44 @@ Bone Fracture Analysis Report
 
 Name: {username}
 Age: {age}
-Email: {to_email}
 Phone: {phone_number}
 
 Prediction: {result}
 
-If result is NORMAL → take care.
+If NORMAL → take care.
 If FRACTURED → consult a doctor.
 
 Regards,
 Bone Fracture AI System
 """)
 
-    # attach image safely
+    # -------- ATTACH IMAGE (AUTO TYPE) --------
     try:
-        with open(image_path, 'rb') as img:
-            msg.add_attachment(
-                img.read(),
-                maintype='image',
-                subtype='png',
-                filename='bone.png'
-            )
-    except:
-        print("Image attach failed")
+        if os.path.exists(image_path):
+            mime_type, _ = mimetypes.guess_type(image_path)
+            if mime_type:
+                maintype, subtype = mime_type.split("/")
+            else:
+                maintype, subtype = "application", "octet-stream"
 
+            with open(image_path, "rb") as f:
+                msg.add_attachment(
+                    f.read(),
+                    maintype=maintype,
+                    subtype=subtype,
+                    filename=os.path.basename(image_path)
+                )
+    except Exception as e:
+        print("Attachment failed:", e)
+
+    # -------- SEND EMAIL --------
     try:
-        server = smtplib.SMTP("smtp.gmail.com", 587, timeout=25)
-        server.ehlo()
-        server.starttls()
-        server.ehlo()
-        server.login(my_mail, password)
-        server.send_message(msg)
-        server.quit()
-        print("Mail sent")
+        with smtplib.SMTP("smtp.gmail.com", 587, timeout=15) as server:
+            server.starttls()
+            server.login(SENDER_MAIL, SENDER_PASSWORD)
+            server.send_message(msg)
+
+        print("EMAIL SENT SUCCESSFULLY")
+
     except Exception as e:
         print("EMAIL ERROR:", e)
