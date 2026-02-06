@@ -23,6 +23,7 @@ output_details = interpreter.get_output_details()
 # ---------------- FLASK APP ----------------
 app = Flask(__name__)
 
+
 @app.route('/')
 def home_page():
     return render_template('home.html')
@@ -52,7 +53,7 @@ def prediction():
         new_image = new_image / 255.0
         new_image = new_image.astype(np.float32)
 
-        # -------- PREDICT --------
+        # -------- PREDICTION --------
         interpreter.set_tensor(input_details[0]['index'], new_image)
         interpreter.invoke()
         pred = interpreter.get_tensor(output_details[0]['index'])
@@ -65,6 +66,7 @@ def prediction():
         # -------- OPTIONAL EMAIL --------
         status = "Email not requested"
 
+        # only send if email is given
         if email and email.strip() != "":
             try:
                 send_email(
@@ -78,9 +80,9 @@ def prediction():
                 status = "Email sent successfully!"
             except Exception as e:
                 print("Email error:", e)
-                status = "Email sending failed."
+                status = "Email sending failed"
 
-        # -------- RETURN RESULT PAGE --------
+        # -------- RETURN RESULT --------
         return render_template(
             'result.html',
             name=name,
