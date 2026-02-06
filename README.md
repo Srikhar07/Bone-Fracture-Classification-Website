@@ -103,6 +103,8 @@ This project can be deployed on:
 * AWS / GCP VM
 * Railway
 
+Note: please ignore procfile and email.py
+
 Make sure:
 
 * `requirements.txt` is updated
