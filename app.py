@@ -37,7 +37,7 @@ def prediction():
 
     img_file = request.files.get('image')
 
-    # Save image
+    # -------- SAVE IMAGE --------
     img_path = os.path.join(UPLOAD_FOLDER, img_file.filename)
     img_file.save(img_path)
 
@@ -60,3 +60,33 @@ def prediction():
         result = "The bone is NORMAL"
 
     # -------- EMAIL --------
+    try:
+        send_email(
+            to_email=email,
+            username=name,
+            age=age,
+            result=result,
+            image_path=img_path,
+            phone_number=phone_number
+        )
+        status = "Email sent successfully!"
+    except Exception as e:
+        status = "Email sending failed."
+        print(e)
+
+    # -------- RETURN RESULT PAGE --------
+    return render_template(
+        'result.html',
+        name=name,
+        age=age,
+        email=email,
+        phone_number=phone_number,
+        result=result,
+        image_path='bone_images/' + img_file.filename,
+        status=status
+    )
+
+
+# ---------------- RUN SERVER ----------------
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
