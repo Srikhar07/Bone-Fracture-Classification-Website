@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bone Fracture Classification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+</head>
+
+<body>
+
+<div class="info">
+    <h1>Bone Fracture Classification</h1>
+    <p>Give Images of Bones Tibia and Fibula.</p>
+    <p>Please give the data carefully.</p>
+    <p class="warning">
+        Wrong information given can cause unnecessary headache!
+    </p>
+    <hr>
+</div>
+
+<div class="container">
+    <div class="card">
+
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <label>Username:</label>
+            <input type="text" name="user_name" required>
+
+            <label>Age:</label>
+            <input type="number" name="age" required>
+
+            <label>Email:</label>
+            <input type="text" name="email" required>
+
+            <label>Phone number:</label>
+            <input type="number" name="phone" required>
+
+            <label>Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+
+            <button type="submit">Predict</button>
+        </form>
+
+    </div>
+</div>
+
+<h4>To Know more about bone fracture 
+    <a href="https://en.wikipedia.org/wiki/Bone_fracture">Press here</a>
+</h4>
+<hr>
+<footer>Made with Love from India ❤️</footer>
+
+</body>
+</html>

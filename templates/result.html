@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Bone Fracture Classification</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+</head>
+
+<body>
+
+<h1>Your Report</h1>
+<hr>
+
+<div class='container'>
+    <div class='card'>
+        {% if result%}
+            <p><strong>Name:</strong>{{name}}</p>
+            <p><strong>Age:</strong>{{age}}</p>
+            <p><strong>Email:</strong>{{email}}</p>
+            <p><strong>Phone number:</strong>{{phone_number}}</p>
+            <img src="{{ url_for('static', filename=image_path) }}">
+            <p>{{result}}</P>
+        {% endif %}
+
+        {% if status%}
+            <p>{{status}}</P>
+        {% endif %}
+    </div>
+</div>
+
+<h4>To Know more about bone fracture 
+    <a href="https://en.wikipedia.org/wiki/Bone_fracture">Press here</a>
+</h4>
+<hr>
+<footer>Made with Love from India ❤️</footer>
+
+</body>
+</html>
