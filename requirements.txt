@@ -1,6 +1,6 @@
-Flask==2.3.3
-tensorflow-cpu==2.10.0
-numpy==1.23.5
-h5py==3.7.0
-gunicorn==21.2.0
+Flask
+tensorflow-cpu
+numpy
+h5py
+gunicorn
 
